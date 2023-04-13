@@ -16,7 +16,7 @@ html, body {
   }
 
   .left{
-    width:400px;
+    width: 1px / 3px;
     height:100%;
     /* background: lightpink; */  /* selected option's color */
     float: left;
@@ -24,7 +24,7 @@ html, body {
   }
 
   .right{
-    width:400px;
+    width: 1px / 3px;
     height:100%; 
     float: right;
     /* background: pink; */ /* default color */
@@ -32,7 +32,7 @@ html, body {
   }
 
   .middle{
-    width: 425px;
+    width: 1px / 3px;
     height: 100%;
     overflow:hidden;
     /* background: pink; */
@@ -55,3 +55,25 @@ html, body {
     justify-content: center;
     align-items: center;
   }
+
+  .left2{
+    width: 45%;
+    height:100%;
+    /* background: lightpink; */  /* selected option's color */
+    float: left;
+    text-align: center;
+  }
+  .mid2{
+    width: 10%;
+    height:100%;
+    overflow:hidden;
+    text-align: center;
+  }
+  .right2{
+    width: 45%;
+    height:100%; 
+    float: right;
+    /* background: pink; */ /* default color */
+    text-align: center;
+  }
+  #p1 { text-align: center; }
