@@ -3,12 +3,45 @@ html, body {
     padding: 0;
   }
 
-  .container {
+
+  .container-title {
+    width: 100%;
+    text-align: center;
+  }
+
+  #instruction-image {
+    text-align: center;
+  }
+
+  #qr-code {
+    width: 100%;
+    max-width: 300px;
+  }
+
+
+  #share-container {
+    background-color: pink;
     padding: 20px;
     display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 50px 1fr 200px;
+    gap: 0px;
+    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-rows: 50px 25px 50px 1fr 50px; */
+  }
+
+  #share-left-container {
+    display: grid;
+    align-items: center;
+    grid-column: 1/3;
+  }
+
+  #share-right-container {
+    background-color: thistle;
+    align-items: center;
+    grid-column: 3/4;
+  }
+
+  #rank {
+    top: 0%;
   }
 
   #score-container {
