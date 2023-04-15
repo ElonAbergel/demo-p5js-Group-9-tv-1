@@ -27,15 +27,26 @@ var frames = {
     }
 
     // Normalize by subtracting the root (pelvis) joint coordinates
-    var pelvis_x = frame.people[0].joints[0].position.x;
-    var pelvis_y = frame.people[0].joints[0].position.y;
-    var pelvis_z = frame.people[0].joints[0].position.z;
+    var chest_x = frame.people[0].joints[2].position.x;
+    var chest_y = frame.people[0].joints[2].position.y;
+    var chest_z = frame.people[0].joints[2].position.z;
+    var nose_x = (frame.people[0].joints[27].position.x - pelvis_x) * -1;
+    var nose_y = (frame.people[0].joints[27].position.y - pelvis_y) * -1;
+    var nose_z = (frame.people[0].joints[27].position.z - pelvis_z) * -1;
+    var left_elbow_x = (frame.people[0].joints[6].position.x - pelvis_x) * -1;
+    var left_elbow_y = (frame.people[0].joints[6].position.y - pelvis_y) * -1;
+    var left_elbow_z = (frame.people[0].joints[6].position.z - pelvis_z) * -1;
     var left_wrist_x = (frame.people[0].joints[7].position.x - pelvis_x) * -1;
     var left_wrist_y = (frame.people[0].joints[7].position.y - pelvis_y) * -1;
     var left_wrist_z = (frame.people[0].joints[7].position.z - pelvis_z) * -1;
 
+
     if (left_wrist_z < 100) {
       return command;
+    }
+
+    if (left_elbow_y > chest_y && left_wrist_y > nose_y && left_wrist_x >left_elbow_x) {
+      console.log("yeeeahaa");
     }
 
     if (left_wrist_x < 200 && left_wrist_x > -200) {
