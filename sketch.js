@@ -26,18 +26,20 @@ var frames = {
 		if (frame.people.length < 1) {
 			return command;
 		}
-		var nose_y = frame.people[0].joints[27].position.y * -1;
-		var left_elbow_y = frame.people[0].joints[6].position.y * -1;
-		var left_wrist_y = frame.people[0].joints[7].position.y * -1;
-		var right_wrist_y = frame.people[0].joints[14].position.y * -1;
-		var right_elbow_y = frame.people[0].joints[13].position.y * -1;
-		var chest_y = frame.people[0].joints[2].position.y;
 
+		var left_elbow_y = frame.people[0].joints[6].position.y * -1;
+		var chest_y = frame.people[0].joints[2].position.y;
+		var left_wrist_y = frame.people[0].joints[7].position.y * -1;
+		var nose_y = frame.people[0].joints[27].position.y * -1;
+		var left_elbow_y = frame.people[0].joints[13].position.y * -1;
+		var left_wrist_y = frame.people[0].joints[14].position.y * -1;
+
+		console.log(left_elbow_y, chest_y);
 		if (
-			left_elbow_y < chest_y &&
-			left_wrist_y < nose_y &&
-			right_elbow_y < chest_y &&
-			right_wrist_y < nose_y
+			left_elbow_y > chest_y &&
+			left_wrist_y > nose_y &&
+			right_elbow_y > chest_y &&
+			right_wrist_y > nose_y
 		) {
 			var count = 5;
 			var timer = setInterval(function () {
@@ -46,7 +48,7 @@ var frames = {
 					clearInterval(timer);
 				}
 				document.getElementById('timer').innerHTML = count;
-			}, 1500);
+			}, 1000);
 		} else {
 			console.log('in the else !');
 		}
