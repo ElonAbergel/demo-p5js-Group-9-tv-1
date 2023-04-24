@@ -166,6 +166,31 @@ var frames = {
                         clearInterval(timer);
                         timer_run = false;
                         console.log("GG!");
+                        var old = null;
+                            gitDownload({
+                                owner: 'ElonAbergel',
+                                repo: 'demo-p5js-Group-9-tv-1',
+                                name: 'ranking_data.txt',
+                                token: TOKEN
+                            }).then(res => {
+                                old = atob(res.content);
+                                old = JSON.parse(old);
+                                // $('#rank-list').html(
+                                //     old.map((item, index) => {
+                                //         return `<li>${item}</li>`;
+                                //     }).join('')
+                                // );
+                                console.log("score: " + score);
+                                old.push(score);
+                                gitUpload({
+                                    owner: 'ElonAbergel',
+                                    repo: 'demo-p5js-Group-9-tv-1',
+                                    name: 'ranking_data.txt',
+                                    content: btoa(JSON.stringify(old)),
+                                    token: TOKEN
+                                });
+                            });
+                        window.location.href = "page8.html";
                         // Jump to the next page (page 6)
                         // 
                         // 

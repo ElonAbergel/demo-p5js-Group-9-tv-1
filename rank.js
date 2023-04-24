@@ -68,7 +68,7 @@ function gitDownload(data) {
 }
 
 var old = null;
-
+var ur_score = null;
 gitDownload({
     owner: 'ElonAbergel',
     repo: 'demo-p5js-Group-9-tv-1',
@@ -77,19 +77,24 @@ gitDownload({
 }).then(res => {
     old = atob(res.content);
     old = JSON.parse(old);
+    ur_score = old[old.length - 1];
+    old.sort((a, b) => b - a);
     $('#rank-list').html(
         old.map((item, index) => {
             return `<li>${item}</li>`;
         }).join('')
     );
-    old.push(666);
-    gitUpload({
-        owner: 'ElonAbergel',
-        repo: 'demo-p5js-Group-9-tv-1',
-        name: 'ranking_data.txt',
-        content: btoa(JSON.stringify(old)),
-        token: TOKEN
-    });
+    console.log(ur_score);
+    $('#your-score').html(ur_score);
+    // console.log("old:"+ old);   
+    // old = [];
+    // gitUpload({
+    //     owner: 'ElonAbergel',
+    //     repo: 'demo-p5js-Group-9-tv-1',
+    //     name: 'ranking_data.txt',
+    //     content: btoa(JSON.stringify(old)),
+    //     token: TOKEN
+    // });
 });
 
 

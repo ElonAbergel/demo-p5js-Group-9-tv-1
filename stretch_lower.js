@@ -25,8 +25,8 @@ var frames = {
 		// no people break
 
         var score = 0;
-        var list = ["pics/opt3.png", "pics/opt3.png"];
-        var total_stretches = 2;
+        var list = ["pics/opt3.png", "pics/opt3.png", "pics/opt3.png"];
+        var total_stretches = 3;
         var num = 0;
 
 		var timer_run = false;
@@ -66,6 +66,7 @@ var frames = {
                 var pelvis_y = positions.joints[0].position.y;
                 var pelvis_z = positions.joints[0].position.z;
 
+                var head_y = positions.joints[26].position.y;
                 var right_knee_x = positions.joints[23].position.x;
                 var right_knee_y = positions.joints[23].position.y;
                 var right_knee_z = positions.joints[23].position.z;
@@ -85,8 +86,45 @@ var frames = {
                 var right_ankle_x = positions.joints[24].position.x;
                 var right_ankle_y = positions.joints[24].position.y;
 
-                console.log(left_ankle_y + " " + right_ankle_y);
+                //console.log(left_ankle_y + " " + right_ankle_y);
                 // Lower body 1                
+
+                if (head_y > chest_y || chest_y> pelvis_y) {
+                    console.log("stretch 3")
+                    command = 0;
+                  }
+                
+                // console.log(left_wrist_y + " " + left_knee_y + " " + pelvis_y);
+
+                // Lower body 2
+                if(nose_x < left_ear_x && nose_x < right_ear_x) {
+                    if(
+                    (
+                        left_knee_y < (right_knee_y - 50)
+                    ) ||
+                    (
+                        right_knee_y < (left_knee_y - 50)
+                    )
+                    ){
+                    console.log("stretch 2");
+                    command = 1;
+                    }
+                }
+                else if(nose_x > left_ear_x && nose_x > right_ear_x) {
+                    if(
+                    (
+                        left_knee_y < (right_knee_y - 50)
+                    ) ||
+                    (
+                        right_knee_y < (left_knee_y - 50)
+                    )
+                    ){
+                    console.log("stretch 2");
+                    command = 1;
+                    }
+                }
+
+                // Lower body 3
                 if(nose_x < left_ear_x && nose_x < right_ear_x) {
                     if(
                     (
@@ -99,7 +137,7 @@ var frames = {
                     )
                     ){
                     console.log("stretch 1");
-                    command = 0;
+                    command = 2;
                     }
                 }
                 else if(nose_x > left_ear_x && nose_x > right_ear_x) {
@@ -114,40 +152,9 @@ var frames = {
                     )
                     ){
                     console.log("stretch 1");
-                    command = 0;
+                    command = 2;
                     }
                 }
-                
-                // console.log(left_wrist_y + " " + left_knee_y + " " + pelvis_y);
-
-                // Lower body 2
-                if(nose_x < left_ear_x && nose_x < right_ear_x) {
-                    if(
-                    (
-                        left_knee_y < (right_knee_y - 100)
-                    ) ||
-                    (
-                        right_knee_y < (left_knee_y - 100)
-                    )
-                    ){
-                    console.log("stretch 2");
-                    command = 0;
-                    }
-                }
-                else if(nose_x > left_ear_x && nose_x > right_ear_x) {
-                    if(
-                    (
-                        left_knee_y < (right_knee_y - 100)
-                    ) ||
-                    (
-                        right_knee_y < (left_knee_y - 100)
-                    )
-                    ){
-                    console.log("stretch 2");
-                    command = 0;
-                    }
-                }
-
                   
                 if (count === 0) {
                     console.log('DONE');
@@ -163,6 +170,31 @@ var frames = {
                         clearInterval(timer);
                         timer_run = false;
                         console.log("GG!");
+                        var old = null;
+                            gitDownload({
+                                owner: 'ElonAbergel',
+                                repo: 'demo-p5js-Group-9-tv-1',
+                                name: 'ranking_data.txt',
+                                token: TOKEN
+                            }).then(res => {
+                                old = atob(res.content);
+                                old = JSON.parse(old);
+                                // $('#rank-list').html(
+                                //     old.map((item, index) => {
+                                //         return `<li>${item}</li>`;
+                                //     }).join('')
+                                // );
+                                console.log("score: " + score);
+                                old.push(score);
+                                gitUpload({
+                                    owner: 'ElonAbergel',
+                                    repo: 'demo-p5js-Group-9-tv-1',
+                                    name: 'ranking_data.txt',
+                                    content: btoa(JSON.stringify(old)),
+                                    token: TOKEN
+                                });
+                            });
+                        window.location.href = "page8.html";
                         // Jump to the next page (page 6)
                         // 
                         // 
@@ -215,3 +247,103 @@ var twod = {
 		$('.twod').attr('src', 'data:image/pnjpegg;base64,' + twod.src);
 	},
 };
+
+
+var TOKEN = "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"
+import { Octokit } from "https://cdn.skypack.dev/@octokit/rest";
+
+function gitUpload(data) {
+
+    // Octokit.js
+    // https://github.com/octokit/core.js#readme
+    const octokit = new Octokit({
+        auth: TOKEN
+    });
+
+    gitDownload({
+        owner: data.owner,
+        repo: data.repo,
+        name: data.name,
+        token: TOKEN
+    }).then(res => {
+        
+        octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+            owner: data.owner,
+            repo: data.repo,
+            path: data.name,
+            message: "upload score from api",
+            branch: 'score_rank',
+            content: data.content,
+            sha: res.sha,
+            headers: {
+                'X-GitHub-Api-Version': '2022-11-28'
+            }
+        }).then(res => {
+            console.log(res);
+        });
+    });
+    
+
+    
+    // return fetch(
+    //     `https://api.github.com/repos/${data.owner}/${data.repo}/contents/${data.name}`,
+    //     {
+    //         method: "PUT",
+    //         headers: {
+    //             Accept: "application/vnd.github+json",
+    //             Authorization: `Bearer ${data.token}`
+    //         },
+    //         body: JSON.stringify({
+    //             message: "upload score from api",
+    //             content: data.content,
+    //             branch: "score_rank"
+    //         })
+    //     }
+    // ).then((res) => res.json());
+}
+
+function gitDownload(data) {
+    const queryParams = new URLSearchParams({ ref: "score_rank" }).toString();
+    return fetch(
+        `https://api.github.com/repos/${data.owner}/${data.repo}/contents/${data.name}?${queryParams}`,
+        {
+            method: "GET",
+            cache: "no-store",
+            headers: {
+                Accept: "application/vnd.github+json",
+                Authorization: `Bearer ${data.token}`
+            },
+        }
+    ).then((res) => res.json());
+
+}
+
+// var old = null;
+
+// gitDownload({
+//     owner: 'ElonAbergel',
+//     repo: 'demo-p5js-Group-9-tv-1',
+//     name: 'ranking_data.txt',
+//     token: TOKEN
+// }).then(res => {
+//     old = atob(res.content);
+//     old = JSON.parse(old);
+//     $('#rank-list').html(
+//         old.map((item, index) => {
+//             return `<li>${item}</li>`;
+//         }).join('')
+//     );
+//     old.push(666);
+//     gitUpload({
+//         owner: 'ElonAbergel',
+//         repo: 'demo-p5js-Group-9-tv-1',
+//         name: 'ranking_data.txt',
+//         content: btoa(JSON.stringify(old)),
+//         token: TOKEN
+//     });
+// });
+
+
+
+
+

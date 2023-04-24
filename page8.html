@@ -18,22 +18,43 @@
             border-radius: 10px;
             box-shadow: 2px 2px 5px grey;
         }
+
+        .score-board{
+            float: left;
+            width: 40%;
+            height: 200px;
+            background-color: thistle;
+            margin: 60px ;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 5px grey;
+            text-align: center;
+            
+        }
+        #your-score {
+            font-size: 40px; /* change the font size to your liking */
+            font-weight: bold; /* make the number bold */
+            color: #ff69b4; /* set the color to pink */
+            text-shadow: 2px 2px 5px grey; /* add a shadow to the text */
+            background-color: #f5deb3; /* add a background color */
+            border-radius: 10px; /* round the corners of the div */
+            padding: 10px; /* add some padding */
+          }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 </head>
 
 <body>
+    <div class="score-board">
+        <h2>Your Score!</h2>
+        <div id="your-score"></div>
+    </div>
     <div class="rank-board">
         <!-- Placeholder for Ranking Board -->
         <h2>Ranking Board</h2>
         <p>Top 5 Players:</p>
         <ol>
             <div id="rank-list">
-                <li>Player 1</li>
-                <li>Player 2</li>
-                <li>Player 3</li>
-                <li>Player 4</li>
-                <li>Player 5</li>
             </div>
         </ol>
     </div>
