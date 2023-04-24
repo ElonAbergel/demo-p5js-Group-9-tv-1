@@ -13,7 +13,7 @@ var frames = {
 	socket: null,
 
 	start: function () {
-		console.log("start");
+		console.log('start');
 		var url = 'ws://' + host + '/frames';
 		frames.socket = new WebSocket(url);
 		frames.socket.onmessage = function (event) {
@@ -38,40 +38,35 @@ var frames = {
 		var timer_run = false;
 		var timer;
 		// console.log("here");
-		
+
 		// we check if the user has both of his hands in the air!
-			// we will start the timer, first time the user put it's both hands in the air
-	if (!timer_run) {
-		var count = 3;
-		timer_run = true;
-		timer = setInterval(function () {
-			count--;
+		// we will start the timer, first time the user put it's both hands in the air
+		if (!timer_run) {
+			var count = 3;
+			timer_run = true;
+			timer = setInterval(function () {
+				count--;
 
-			// When the timer is equal to 0 we will redirect to a tutorial page
-			if (count === 0) {
-				console.log('DONE');
-				clearInterval(timer);
-				timer = 0; // stop the interval
-				timer_run = false;
-				window.location.href = 'page2.html'; // redirect to page2.html
-				setTimeout(function () {
-					window.location.href = 'page3.html'; // redirect to different_page.html after 3 seconds
-				}, 3000);
-				
-			} else if (count < 0) {
-				console.log('Counter should not go below 0');
-				clearInterval(timer); // stop the interval
-				timer_run = false;
-			} else {
-				document.getElementById('timer').innerHTML = count;
-				// console.log('TIMER IS MOVING!');
-			}
-		}, 1000);
-		// console.log('TIMER IS STARTED!');
-	} else {
-		console.log('TIMER IS ALREADY RUNNING!');
-	}
-
+				// When the timer is equal to 0 we will redirect to a tutorial page
+				if (count === 0) {
+					console.log('DONE');
+					clearInterval(timer);
+					timer = 0; // stop the interval
+					timer_run = false;
+					window.location.href = 'page2.html'; // redirect to page2.html
+				} else if (count < 0) {
+					console.log('Counter should not go below 0');
+					clearInterval(timer); // stop the interval
+					timer_run = false;
+				} else {
+					document.getElementById('timer').innerHTML = count;
+					// console.log('TIMER IS MOVING!');
+				}
+			}, 1000);
+			// console.log('TIMER IS STARTED!');
+		} else {
+			console.log('TIMER IS ALREADY RUNNING!');
+		}
 	},
 
 	get_left_wrist_command: function (frame) {
@@ -82,21 +77,23 @@ var frames = {
 
 		var pelvis_y = positions.joints[2].position.y;
 
-		var left_elbow_y = positions.joints[6].position.y ;
+		var left_elbow_y = positions.joints[6].position.y;
 		var chest_y = positions.joints[2].position.y;
 		var left_wrist_y = positions.joints[7].position.y;
 		var nose_y = positions.joints[27].position.y;
 		var right_elbow_y = positions.joints[13].position.y;
 		var right_wrist_y = positions.joints[14].position.y;
 
-		if (left_elbow_y < nose_y &&
+		if (
+			left_elbow_y < nose_y &&
 			left_wrist_y < nose_y &&
 			right_elbow_y < nose_y &&
 			right_wrist_y < nose_y &&
-			started == false) {
-				started = true;
-				this.timer_function();
-			}
+			started == false
+		) {
+			started = true;
+			this.timer_function();
+		}
 	},
 };
 
