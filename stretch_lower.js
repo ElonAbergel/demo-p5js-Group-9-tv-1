@@ -20,21 +20,17 @@ var frames = {
         this.timer_function();
 	},
 
-	timer_function: function (frame) {
-		var command = null;
+	timer_function: function () {
+		var command = 0;
 		// no people break
-		if (frame.people.length < 1) {
-			return command;
-		}
 
         var score = 0;
-        var list = ["pics/opt.png", "pics/opt2.png"];
+        var list = ["pics/opt3.png", "pics/opt3.png"];
         var total_stretches = 2;
         var num = 0;
 
 		var timer_run = false;
 		var timer;
-
 		// we check if the user has both of his hands in the air!
 
         if (!timer_run) {
@@ -42,9 +38,12 @@ var frames = {
             var succeeded = false;
             timer_run = true;
             timer = setInterval(function () {
+                if (positions.length < 1) {
+                    return null;
+                }
                 count--;
-                command = 0;
-
+                command = -1;
+                // console.log("ticking down");
                 // Normalize by subtracting the root (pelvis) joint coordinates
                 var chest_x = positions.joints[2].position.x;
                 var chest_y = positions.joints[2].position.y;
@@ -78,42 +77,111 @@ var frames = {
                 var right_wrist_y = positions.joints[14].position.y;
                 var right_wrist_z = positions.joints[14].position.z;
 
-                if (left_elbow_y < chest_y && left_wrist_y < nose_y && left_wrist_x >left_elbow_x) {
-                // console.log(left_elbow_y + ' ' + chest_y + ' ' + left_wrist_y + ' ' + nose_y + ' ' + left_wrist_x + ' ' + left_elbow_x);
-                console.log("stretch 1");
-                command = 1;
-                } else if (right_elbow_y < chest_y && right_wrist_y < nose_y && right_wrist_x < right_elbow_x) {
-                console.log("stretch 1");
-                command = 1;
+                var left_ear_x = positions.joints[29].position.x;
+                var right_ear_x = positions.joints[31].position.x;
+
+                var left_ankle_x = positions.joints[20].position.x;
+                var left_ankle_y = positions.joints[20].position.y;
+                var right_ankle_x = positions.joints[24].position.x;
+                var right_ankle_y = positions.joints[24].position.y;
+
+                console.log(left_ankle_y + " " + right_ankle_y);
+                // Lower body 1                
+                if(nose_x < left_ear_x && nose_x < right_ear_x) {
+                    if(
+                    (
+                        left_ankle_x > right_knee_x && 
+                        left_ankle_y < right_knee_y
+                    ) ||
+                    (
+                        right_ankle_x > left_knee_x &&
+                        right_ankle_y < left_knee_y
+                    )
+                    ){
+                    console.log("stretch 1");
+                    command = 0;
+                    }
+                }
+                else if(nose_x > left_ear_x && nose_x > right_ear_x) {
+                    if(
+                    (
+                        left_ankle_x < right_knee_x && 
+                        left_ankle_y > right_knee_y
+                    ) ||
+                    (
+                        right_ankle_x < left_knee_x &&
+                        right_ankle_y > left_knee_y
+                    )
+                    ){
+                    console.log("stretch 1");
+                    command = 0;
+                    }
+                }
+                
+                // console.log(left_wrist_y + " " + left_knee_y + " " + pelvis_y);
+
+                // Lower body 2
+                if(nose_x < left_ear_x && nose_x < right_ear_x) {
+                    if(
+                    (
+                        left_knee_y < (right_knee_y - 100)
+                    ) ||
+                    (
+                        right_knee_y < (left_knee_y - 100)
+                    )
+                    ){
+                    console.log("stretch 2");
+                    command = 0;
+                    }
+                }
+                else if(nose_x > left_ear_x && nose_x > right_ear_x) {
+                    if(
+                    (
+                        left_knee_y < (right_knee_y - 100)
+                    ) ||
+                    (
+                        right_knee_y < (left_knee_y - 100)
+                    )
+                    ){
+                    console.log("stretch 2");
+                    command = 0;
+                    }
                 }
 
+                  
                 if (count === 0) {
                     console.log('DONE');
-                    clearInterval(timer);
-                    timer = 0; // stop the interval
                     num = num + 1;
                     if (num < total_stretches) {
                         document.getElementById('demo-img').src = list[num];
                         succeeded = false;
                         count = 10;
+                        document.getElementById('stretch-timer').innerHTML = count;
+                        document.getElementById('stretch-text').innerHTML = "Complete the stretch before time runs out!";
                     } else {
+                        timer = 0;
+                        clearInterval(timer);
+                        timer_run = false;
+                        console.log("GG!");
+                        // Jump to the next page (page 6)
+                        // 
+                        // 
 
                     };
                 } else if (count < 0) {
-                    console.log('Counter should not go below 0');
                     clearInterval(timer); // stop the interval
                     timer_run = false;
                 } else {
-                    document.getElementById('timer').innerHTML = count;
-                    console.log('TIMER IS MOVING!');
-                    if (command == 1) {
-                        document.getElementById('timer').innerHTML = count;
-                        document.getElementById('stretch-text').innerHTML = "You did it! Now Keep the Stretch for 10 more seconds!";
+                    document.getElementById('stretch-timer').innerHTML = count;
+                    if (command == num) {
+                        document.getElementById('stretch-timer').innerHTML = count;
+                        document.getElementById('stretch-text').innerHTML = "You did it! Now keep the stretch for 10 more seconds!";
                         if (succeeded == false) {
                             succeeded = true;
                             score = score + count;
                             count = 10;
-                        }
+                            document.getElementById('stretch-timer').innerHTML = count;
+                    }
                     } else {
                     // When the timer is equal to 0 we will redirect to a tutorial page
                         }
