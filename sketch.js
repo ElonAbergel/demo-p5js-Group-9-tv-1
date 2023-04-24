@@ -18,9 +18,6 @@ var frames = {
 		frames.socket = new WebSocket(url);
 		frames.socket.onmessage = function (event) {
 			var command = frames.get_left_wrist_command(JSON.parse(event.data));
-			// if (command !== null) {
-			// 	sendWristCommand(command);
-			// }
 		};
 	},
 
