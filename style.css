@@ -260,14 +260,15 @@ canvas {
 #p1 {
 	text-align: center;
 }
-
+/* 
 .cursor {
 	cursor: pointer;
-	position: absolute;
+	position: fixed;
 	width: 30px;
 	height: 30px;
 	border-radius: 50%;
 	background-color: red;
-	pointer-events: none;
 	z-index: 9999;
-}
+	left: 50%;
+	top: 50%;
+} */
