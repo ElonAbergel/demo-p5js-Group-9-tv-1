@@ -272,3 +272,11 @@ canvas {
 	left: 50%;
 	top: 50%;
 } */
+.bold-text {
+	font-weight: bold;
+	font-size: 24px; /* change the font size as needed */
+}
+
+.instruction-text {
+	font-size: 20px; /* change the font size as needed */
+}
