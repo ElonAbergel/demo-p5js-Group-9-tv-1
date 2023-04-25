@@ -25,7 +25,7 @@ var frames = {
 		// no people break
 
         var score = 0;
-        var list = ["pics/opt3.png", "pics/opt.png", "pics/opt2.png"];
+        var list = ["pics/upper1.png", "pics/upper2.png", "pics/upper3.png"];
         var total_stretches = 3;
         var num = 0;
 

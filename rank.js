@@ -1,4 +1,4 @@
-var TOKEN = "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"
+var TOKEN = "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"
 import { Octokit } from "https://cdn.skypack.dev/@octokit/rest";
 
 function gitUpload(data) {
